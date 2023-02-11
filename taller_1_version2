@@ -1,0 +1,96 @@
+/******************************************************************************
+Fecha: 1-02-2023
+version Beta_1_.01v
+//TDA:tipo de dato abstracto
+
+
+Problema: Se requiere crear un tipo de dato abstracto en c++, tal que pueda capturar info significativa
+ -Se sugiere que los datos solicitados sean exhaustivos
+ -Se requiere saber la cantidad de hijos y los datos de edad de estos 
+ -Se requiere que se impriman los nombres de los usuarios registrados satisfactoriamente
+ 
+ 
+Solucion: Se crea una estructura que captura los siguientes datos
+ -Se hará un TDA para la captura de datos del ususario
+ -Se hará un TDA anidado para la captura de dadtos de los hijos
+ -Se requiere que se imprima los nombre de los usuarios registrados satisfactoriamente
+ -Se anunciará explicitamente cada acción/operación a realizar
+*******************************************************************************/
+
+//g++ : invocar al compilador
+
+
+#include <iostream>
+using namespace std;
+
+//se crea objeto TDA para la captura de los datos de los hijos
+struct hijo_usuario{
+  int edad;
+  char documento[10];
+};
+
+//se crea objeto TDA para la captura de los datos principales
+struct usuario_gym{
+  string nombre;
+  char documento[10];
+  char movil[10];
+  int edad;
+  char genero;
+  float masa_corporal;
+  int c_hijos;
+//se declara el objeto TDA hijo
+hijo_usuario registro_hijo_usuario[10];
+};
+
+
+int main()
+{
+  //declaracion varables globales generales
+  int i, j=0, k=0, cantidad_personas;
+
+  //se presenta la bienvenida
+  cout<<"*\n******************************************************\n*";
+  cout<<"*\n**************  Bienvenido al Gym  *******************\n*";
+  cout<<"*\n******************************************************\n*";
+
+  // Se pregunta canti de usuarios a registrar
+  cout<< "Cuantos usuarios va a registrar ";
+  cin>> cantidad_personas;
+  //se crea objeto TDA general para la captura de los datos, tipo vector 
+  usuario_gym persona[cantidad_personas];
+  //Se hace un ciclo para capturar los datos de las personas
+  for(i=0;i<cantidad_personas;i++){
+    //control número de usuarios
+    j=j+1;
+    //se captura cada dato del TDA principal
+    cout << "\n" "--> Ingrese nombre ["<< j << "]: ";
+    cin >> persona[i].nombre;
+    cout << "\n" "--> Ingrese documento ["<< j << "]: ";
+    cin >> persona[i].documento;
+    cout << "\n" "--> Ingrese movil ["<< j << "]: ";
+    cin >> persona[i].movil;
+    cout << "\n" "--> Ingrese edad ["<< j << "]: ";
+    cin >> persona[i].edad;
+    cout << "\n" "--> Ingrese genero ["<< j << "]: ";
+    cin >> persona[i].genero;
+    cout << "\n" "--> Ingrese masa_corporal ["<< j << "]: ";
+    cin >> persona[i].masa_corporal;
+
+
+    
+    cout << "\n" "--> Ingrese c_hijos ["<< j << "]: ";
+    cin >> persona[i].c_hijos;
+    //Se hace una decisión para capturar la info de los hijos (si tiene o no hijos) 
+
+    if(persona[i].c_hijos>0 ){
+      //se hace un bucle segun cantidad de hijos 
+      for(k=0;k<persona[i].c_hijos;k++)
+        {
+          cout << "\n" "--> Ingrese masa_corporal ["<< (k+1) << "]: ";
+          cin >> persona[i].registro_hijo_usuario[k].edad;
+        }
+      
+    }
+    
+  }
+}
