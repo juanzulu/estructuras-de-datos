@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+
+/*
+Autor: Juan Miguel Zuluaga 
+Problema: Se desea capturar los datos de una persona
+Solucion: Se crea una estructura que captura los siguientes datos
+1. nombre de tipo string
+2. la edad de tipo int.
+3. el celular de tipo int 
+*/
+
+//declaracion de la estructura
+struct persona
+{
+    //tambien se puede poner: char name[20]; (en el caso de strings)
+    //aca esto quiere decir que se repartira cada letra en el arreglo definido y dentro se definde un tamaño
+    string name;
+    int nacimiento;
+    int celu;
+};
+
+int main()
+{
+//aca se crea la variable de tipo persona (el nombre de la estructura) el cual es un nuevo tipo de dato
+//el cual contiene nombre y edad,
+//dentro del arreglo se definio el tamano para saber la cantidad de personas, en este caso 8
+    persona p[8];
+    
+    
+    for (int i=0; i < 8; i++)
+    {
+        //para acceder a la persona p, se escribe la variable y se le adjunta el punto para preguntarle
+        // a que atributo desea acceder de dicha persona;
+        //para acceder al nombre
+        cout <<"Escriba el Nombre "<<i+1<<":";
+        cin >> p[i].name;
+
+//para acceder al nacimiento
+        cout <<"Escriba el nacimiento de "<<i+1<<":";
+        cin >> p[i].nacimiento;
+        
+    ////para acceder al celular
+        cout <<"Escriba el celular de "<<i+1<<":";
+        cin >> p[i].celu;
+
+        cout <<endl;
+    }
+cout<<"Las personas son:";
+
+    for (int i=0; i < 8; i++)
+    {
+        //aca se hace lo mismo que en el for anterior, solo que para imprimir
+        cout<<""<<p[i].name<< endl;
+        cout<<""<<p[i].nacimiento<< endl;
+        cout<<""<<p[i].celu <<endl;
+    }
+   
+}
+
+
+
