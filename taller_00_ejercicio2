@@ -1,0 +1,77 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+
+//Creacion de la estrcutura de datos
+struct datos
+{
+  string name;
+  char sexo;
+  string lastname;
+  double precio;
+  int cantidad;
+};
+
+//Prototipo de la funcion
+void captura(datos *,datos[],int);
+void imprimir(datos *,datos[],int);
+
+int main() 
+{
+  datos *pointer;
+  datos clientes[100];
+  int canti;
+
+  cout <<"Cuantos clientes desea ingresar? :";
+  cin >> canti;
+  
+  captura(pointer,clientes,canti);
+  imprimir(pointer,clientes,canti);
+}
+
+//funcion que captura los datos de un usuario
+void captura(datos *pointer, datos clientes[100], int canti)
+{
+  pointer = &clientes[0];
+  for(int i=0;i<canti;i++)
+    {
+    //captura de datos de los clientes
+      cout<< "Ingrese su nombre: ";
+      cin>>(*pointer).name;
+      cout<< "Ingrese su apellido: ";
+      cin>>(*pointer).lastname;
+      cout<< "Ingrese su sexo (H/M): ";
+      cin>>(*pointer).sexo;
+      cout<< "Cantidad de productos: ";
+      cin>> (*pointer).cantidad;
+      cout<< "Precio del producto: ";
+      cin>> (*pointer).precio;
+      cout<<endl;
+      pointer++;
+    }
+}
+
+void imprimir(datos *pointer, datos clientes[],int canti)
+{
+  pointer = &clientes[0];
+  string nameArchi = "archiv.txt";
+  ofstream archivo;
+  // Abrimos el archivo
+  archivo.open(nameArchi.c_str(), fstream::out);
+  for(int i=0;i<canti;i++)
+    {
+      cout<<"Cliente: " << i+1;
+      //1. impresion de datos de los clientes
+      archivo << "Su nombre es: " <<(*pointer).name<<endl;
+      archivo << "Su apellido es: " <<(*pointer).lastname<<endl;
+      archivo << "Su sexo es: " <<(*pointer).sexo<<endl;
+      cout<<endl;
+      
+      archivo<< "Valor a pagar: " << (*pointer).cantidad*(*pointer).precio << endl;
+    } 
+  // Finalmente cerramos el archivo
+      archivo.close();
+      cout << "Escrito correctamente";
+      cout<<endl;
+}
