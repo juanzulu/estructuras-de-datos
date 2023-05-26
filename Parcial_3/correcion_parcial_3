@@ -1,5 +1,6 @@
 #include <vector>
 #include <queue>
+#include <math.h>
 
 class Jugador
 {
@@ -42,20 +43,20 @@ public:
     SecuenciaOptima ObtenerSecuenciaOptima(int numero, bool esAtaque) const;
 };
 
-//inicio punto 1
+//punto 1 inicio
 float Jugador::CalcularEfectividadHasta(const Jugador& otro) const {
     float a_x = this->m_PosX;
     float a_y = this->m_PosY;
     float b_x = otro.m_PosX;
     float b_y = otro.m_PosY;
     
-    float longitud = sqrt(pow(bx - a_x, 2) + pow(by - a_y, 2));
+    float longitud = sqrt(pow(b_x - a_x, 2) + pow(b_y - a_y, 2));
     float efectCalc = 1 -(longitud / m_TamanoTerreno, 2);
     
     return efectCalc;
 }
 
-//inicia punto 2
+//punto 2 inicio
 std::pair<SituacionDeJuego::SecuenciasOptimas, std::vector<float>> SituacionDeJuego::ObtenerSecuenciasOptimas(int numero, bool esAtaque) const {
     SecuenciasOptimas secuencias;  // Inicialización de la lista de secuencias
     std::vector<float> probabilidad(m_Jugadores.size(), 0);  // Inicialización de las probabilidades
@@ -91,7 +92,7 @@ std::pair<SituacionDeJuego::SecuenciasOptimas, std::vector<float>> SituacionDeJu
     return {secuencias, probabilidad};  // Se devuelven las secuencias y las probabilidades
 }
 
-// Implementación de ObtenerSecuenciaOptima  inicia punto 3
+// punto 2 inicio: Implementación de ObtenerSecuenciaOptima
 SituacionDeJuego::SecuenciaOptima SituacionDeJuego::ObtenerSecuenciaOptima(int numero, bool esAtaque) const {
     float mejorDesempeno = -1;  // Inicialización del mejor rendimiento
     int jugadorMejorDesempeno = -1;  // Inicialización del jugador con el mejor rendimiento
