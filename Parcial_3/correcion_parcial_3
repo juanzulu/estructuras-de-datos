@@ -1,0 +1,168 @@
+#include <vector>
+#include <queue>
+
+class Jugador
+{
+protected:
+    int m_Numero;  // Identificador del jugador
+    float m_PosX;  // Posición X del jugador
+    float m_PosY;  // Posición Y del jugador
+    float m_TamanoTerreno;  // Tamaño del terreno de juego
+public:
+    Jugador();  // Constructor de la clase
+    virtual ~Jugador();  // Destructor de la clase
+    float ObtenerDesempenoAtaque() const;  // Método para obtener el rendimiento de ataque del jugador
+    float ObtenerDesempenoDefensa() const;  // Método para obtener el rendimiento de defensa del jugador
+    float CalcularEfectividadHasta(const Jugador& otro) const;  // Método para calcular la efectividad de un pase a otro jugador
+    int getm_Numero() const { return m_Numero; }  // Método para obtener el número del jugador
+};
+
+
+class SituacionDeJuego
+{
+protected:
+    std::vector<Jugador> m_Jugadores;
+    float m_TamanoTerreno;
+public:
+    SituacionDeJuego();
+    virtual ~SituacionDeJuego();
+
+    struct NodoSecuenciasOptimas
+    {
+        int ElPaseVieneDesde;
+    };
+    typedef std::vector<NodoSecuenciasOptimas> SecuenciasOptimas;
+    std::pair<SecuenciasOptimas, std::vector<float>> ObtenerSecuenciasOptimas(int numero, bool esAtaque) const;
+    struct SecuenciaOptima
+    {
+        std::vector<int> Secuencia;
+        float ProbabilidadFinal;
+        bool TodosLosJugadores;
+    };
+    SecuenciaOptima ObtenerSecuenciaOptima(int numero, bool esAtaque) const;
+};
+
+#include <vector>
+#include <queue>
+
+class Jugador
+{
+protected:
+    int m_Numero;  // Identificador del jugador
+    float m_PosX;  // Posición X del jugador
+    float m_PosY;  // Posición Y del jugador
+    float m_TamanoTerreno;  // Tamaño del terreno de juego
+public:
+    Jugador();  // Constructor de la clase
+    virtual ~Jugador();  // Destructor de la clase
+    float ObtenerDesempenoAtaque() const;  // Método para obtener el rendimiento de ataque del jugador
+    float ObtenerDesempenoDefensa() const;  // Método para obtener el rendimiento de defensa del jugador
+    float CalcularEfectividadHasta(const Jugador& otro) const;  // Método para calcular la efectividad de un pase a otro jugador
+    int getm_Numero() const { return m_Numero; }  // Método para obtener el número del jugador
+};
+
+
+class SituacionDeJuego
+{
+protected:
+    std::vector<Jugador> m_Jugadores;
+    float m_TamanoTerreno;
+public:
+    SituacionDeJuego();
+    virtual ~SituacionDeJuego();
+
+    struct NodoSecuenciasOptimas
+    {
+        int ElPaseVieneDesde;
+    };
+    typedef std::vector<NodoSecuenciasOptimas> SecuenciasOptimas;
+    std::pair<SecuenciasOptimas, std::vector<float>> ObtenerSecuenciasOptimas(int numero, bool esAtaque) const;
+    struct SecuenciaOptima
+    {
+        std::vector<int> Secuencia;
+        float ProbabilidadFinal;
+        bool TodosLosJugadores;
+    };
+    SecuenciaOptima ObtenerSecuenciaOptima(int numero, bool esAtaque) const;
+};
+
+//inicio punto 1
+float Jugador::CalcularEfectividadHasta(const Jugador& otro) const {
+    float a_x = this->m_PosX;
+    float a_y = this->m_PosY;
+    float b_x = otro.m_PosX;
+    float b_y = otro.m_PosY;
+    
+    float longitud = sqrt(pow(bx - a_x, 2) + pow(by - a_y, 2));
+    float efectCalc = 1 -(longitud / m_TamanoTerreno, 2);
+    
+    return efectCalc;
+}
+
+//inicia punto 2
+std::pair<SituacionDeJuego::SecuenciasOptimas, std::vector<float>> SituacionDeJuego::ObtenerSecuenciasOptimas(int numero, bool esAtaque) const {
+    SecuenciasOptimas secuencias;  // Inicialización de la lista de secuencias
+    std::vector<float> probabilidad(m_Jugadores.size(), 0);  // Inicialización de las probabilidades
+    probabilidad[numero] = 1;  // La probabilidad del jugador inicial es 1
+    // Inicialización de los nodos de las secuencias
+    for(int i = 0; i < m_Jugadores.size(); i++) {
+        NodoSecuenciasOptimas nodo;
+        nodo.ElPaseVieneDesde = -1;
+        secuencias.push_back(nodo);
+    }
+    // Inicialización de la cola de prioridad para el algoritmo de Dijkstra
+    std::priority_queue<std::pair<float, int>, std::vector<std::pair<float, int>>, std::greater<std::pair<float, int>>> pq;
+    pq.push({1, numero});  // Se inserta el jugador inicial en la cola
+    // Bucle del algoritmo de Dijkstra
+    while(!pq.empty()) {
+        int jugadorActual = pq.top().second;  // Jugador actual
+        float probActual = pq.top().first;  // Probabilidad actual
+        pq.pop();
+        // Bucle para todos los jugadores
+        for(int i = 0; i < m_Jugadores.size(); i++) {
+            if(i == jugadorActual) continue;  // Se salta el jugador actual
+            // Se calcula la nueva probabilidad
+            float efectividadPase = m_Jugadores[jugadorActual].CalcularEfectividadHasta(m_Jugadores[i]);
+            float nuevaProb = probActual * efectividadPase;
+            // Si la nueva probabilidad es mayor que la actual, se actualiza la probabilidad y se inserta el jugador en la cola
+            if(secuencias[i].ElPaseVieneDesde == -1 || nuevaProb > probabilidad[i]) {
+                secuencias[i].ElPaseVieneDesde = jugadorActual;
+                probabilidad[i] = nuevaProb;
+                pq.push({nuevaProb, i});
+            }
+        }
+    }
+    return {secuencias, probabilidad};  // Se devuelven las secuencias y las probabilidades
+}
+
+// Implementación de ObtenerSecuenciaOptima  inicia punto 3
+SituacionDeJuego::SecuenciaOptima SituacionDeJuego::ObtenerSecuenciaOptima(int numero, bool esAtaque) const {
+    float mejorDesempeno = -1;  // Inicialización del mejor rendimiento
+    int jugadorMejorDesempeno = -1;  // Inicialización del jugador con el mejor rendimiento
+    // Bucle para todos los jugadores para encontrar el jugador con el mejor rendimiento
+    for(const Jugador& jugador : m_Jugadores) {
+        float desempeno = esAtaque ? jugador.ObtenerDesempenoAtaque() : jugador.ObtenerDesempenoDefensa();
+        if(desempeno > mejorDesempeno) {
+            mejorDesempeno = desempeno;
+            jugadorMejorDesempeno = jugador.getm_Numero();
+        }
+    }
+    // Se obtienen las secuencias y las probabilidades
+    std::pair<SecuenciasOptimas, std::vector<float>> result = ObtenerSecuenciasOptimas(numero, esAtaque);
+    SecuenciasOptimas secuencias = result.first;
+    std::vector<float> probabilidad = result.second;
+    SecuenciaOptima secuenciaOptima;  // Inicialización de la secuencia óptima
+    int jugadorActual = jugadorMejorDesempeno;  // Inicialización del jugador actual
+    bool todosLosJugadores = true;  // Inicialización del indicador de todos los jugadores
+    // Bucle para construir la secuencia óptima
+    while(jugadorActual != numero) {
+        secuenciaOptima.Secuencia.insert(secuenciaOptima.Secuencia.begin(), jugadorActual);  // Se inserta el jugador actual en la secuencia
+        // Si el jugador actual no tiene un pase de entrada, no están todos los jugadores
+        if(secuencias[jugadorActual].ElPaseVieneDesde == -1) todosLosJugadores = false;
+        jugadorActual = secuencias[jugadorActual].ElPaseVieneDesde;  // Se actualiza el jugador actual
+    }
+    secuenciaOptima.Secuencia.insert(secuenciaOptima.Secuencia.begin(), numero);  // Se inserta el jugador inicial en la secuencia
+    secuenciaOptima.ProbabilidadFinal = probabilidad[jugadorMejorDesempeno];  // Se establece la probabilidad final
+    secuenciaOptima.TodosLosJugadores = todosLosJugadores;  // Se establece el indicador de todos los jugadores
+    return secuenciaOptima;  // Se devuelve la secuencia óptima
+}
