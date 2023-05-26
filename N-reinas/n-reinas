@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+
+//declaracion
+int r = 0;
+//funcion para comparar que la reinas no esten juntas
+bool comprobar(const std::vector<int>& queens, int fila, int columna) 
+{
+    for (int i = 0; i < fila; i++) 
+    {
+        if (queens[i] == columna || std::abs(i - fila) == std::abs(queens[i] - columna)) 
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+//funcion recursiva (backtracking)
+void Nreina(std::vector<int>& queens, int n, int fila = 0) 
+{
+    //validar que la solucion si se pueda
+    if (fila == n) 
+    {
+        r++;
+        std::cout << "Solution " << r << " : ";
+        for (int i = 0; i < n; i++) 
+        {
+            std::cout << queens[i] << " , ";
+        }
+        std::cout << std::endl;
+        return;
+    }
+
+    for (int columna = 0; columna < n; columna++) 
+    {
+        //toca poner mas reinas
+        if (comprobar(queens, fila, columna)) 
+        {
+            queens[fila] = columna;
+            Nreina(queens, n, fila + 1);
+        }
+    }
+}
+
+int main() 
+{
+    int canti;
+    std::cout << "Ingrese la cantidad de reinas: ";
+    std::cin >> canti;
+
+    std::vector<int> queens(canti, -1);
+
+    Nreina(queens, canti);
+
+    return 0;
+}
