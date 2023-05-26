@@ -1,0 +1,28 @@
+//Ejercicio 1
+
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+using namespace std;
+
+int main()
+{
+  //1. crear array con 10 elementos:
+  int array[10];
+  //2. Funcion que genera números aleatorios distintos
+  srand(time(NULL));
+  //4. Crear un puntero
+  int *pointer = &array[0];
+  
+  // ciclo que va del 0-9 (10 números);
+    for (int i=0; i<10; i++) 
+    {
+      //llenar array con números aleatorios
+      array[i] = + rand() % (25 - 0);
+      
+      cout<< i <<") Valor del puntero " <<*pointer <<" Direccion en memoria del puntero: "<<pointer <<endl;
+      pointer++;
+    } 
+  
+  
+}
