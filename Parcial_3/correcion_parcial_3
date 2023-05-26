@@ -42,50 +42,6 @@ public:
     SecuenciaOptima ObtenerSecuenciaOptima(int numero, bool esAtaque) const;
 };
 
-#include <vector>
-#include <queue>
-
-class Jugador
-{
-protected:
-    int m_Numero;  // Identificador del jugador
-    float m_PosX;  // Posición X del jugador
-    float m_PosY;  // Posición Y del jugador
-    float m_TamanoTerreno;  // Tamaño del terreno de juego
-public:
-    Jugador();  // Constructor de la clase
-    virtual ~Jugador();  // Destructor de la clase
-    float ObtenerDesempenoAtaque() const;  // Método para obtener el rendimiento de ataque del jugador
-    float ObtenerDesempenoDefensa() const;  // Método para obtener el rendimiento de defensa del jugador
-    float CalcularEfectividadHasta(const Jugador& otro) const;  // Método para calcular la efectividad de un pase a otro jugador
-    int getm_Numero() const { return m_Numero; }  // Método para obtener el número del jugador
-};
-
-
-class SituacionDeJuego
-{
-protected:
-    std::vector<Jugador> m_Jugadores;
-    float m_TamanoTerreno;
-public:
-    SituacionDeJuego();
-    virtual ~SituacionDeJuego();
-
-    struct NodoSecuenciasOptimas
-    {
-        int ElPaseVieneDesde;
-    };
-    typedef std::vector<NodoSecuenciasOptimas> SecuenciasOptimas;
-    std::pair<SecuenciasOptimas, std::vector<float>> ObtenerSecuenciasOptimas(int numero, bool esAtaque) const;
-    struct SecuenciaOptima
-    {
-        std::vector<int> Secuencia;
-        float ProbabilidadFinal;
-        bool TodosLosJugadores;
-    };
-    SecuenciaOptima ObtenerSecuenciaOptima(int numero, bool esAtaque) const;
-};
-
 //inicio punto 1
 float Jugador::CalcularEfectividadHasta(const Jugador& otro) const {
     float a_x = this->m_PosX;
