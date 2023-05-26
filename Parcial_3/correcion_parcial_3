@@ -51,7 +51,7 @@ float Jugador::CalcularEfectividadHasta(const Jugador& otro) const {
     float b_y = otro.m_PosY;
     
     float longitud = sqrt(pow(b_x - a_x, 2) + pow(b_y - a_y, 2));
-    float efectCalc = 1 -(longitud / m_TamanoTerreno, 2);
+    float efectCalc = 1 -(longitud / m_TamanoTerreno);
     
     return efectCalc;
 }
